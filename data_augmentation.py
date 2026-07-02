@@ -8,10 +8,72 @@ from typing import Optional
 
 import pandas as pd
 
-from . import config
-from .llm_client import LLMClient, get_client
+try:
+    from . import config
+    from .llm_client import LLMClient, get_client
+except ImportError:
+    import config
+    from llm_client import LLMClient, get_client
 
 logger = logging.getLogger(__name__)
+
+
+def _parse_json_array(response: str) -> list[dict]:
+    """Parse a JSON array, tolerating an optional Markdown code fence."""
+    text = response.strip()
+    if text.startswith("```"):
+        first_newline = text.find("\n")
+        closing_fence = text.rfind("```")
+        if first_newline != -1 and closing_fence > first_newline:
+            text = text[first_newline + 1 : closing_fence].strip()
+
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError:
+        start = text.find("[")
+        end = text.rfind("]")
+        if start == -1 or end <= start:
+            raise
+        data = json.loads(text[start : end + 1])
+
+    if not isinstance(data, list):
+        raise ValueError(f"Expected a JSON array, received {type(data).__name__}")
+
+    valid_items = []
+    for item in data:
+        if not isinstance(item, dict):
+            continue
+        question = str(item.get("question", "")).strip()
+        answer = str(item.get("answer", "")).strip()
+        if question and answer:
+            valid_items.append({"question": question, "answer": answer})
+    return valid_items
+
+
+def _generate_json_array(
+    client: LLMClient,
+    prompt: str,
+    context: str,
+    max_tokens: Optional[int] = None,
+    attempts: int = 3,
+) -> list[dict]:
+    """Generate and parse a JSON array, retrying malformed responses."""
+    for attempt in range(1, attempts + 1):
+        try:
+            response = client.generate(prompt, max_tokens=max_tokens)
+            return _parse_json_array(response)
+        except Exception as exc:
+            if attempt == attempts:
+                logger.error("%s failed after %d attempts: %s", context, attempts, exc)
+            else:
+                logger.warning(
+                    "%s returned invalid output (attempt %d/%d): %s; retrying",
+                    context,
+                    attempt,
+                    attempts,
+                    exc,
+                )
+    return []
 
 
 class QuestionParaphraser:
@@ -49,16 +111,11 @@ Format your response as a JSON array where each item has "question" and "answer"
 
 Only return valid JSON, no other text."""
 
-        try:
-            response = self.client.generate(prompt)
-            variations = json.loads(response)
-            if not isinstance(variations, list):
-                logger.warning(f"Expected list from paraphrase, got: {type(variations)}")
-                return []
-            return variations
-        except (json.JSONDecodeError, Exception) as e:
-            logger.error(f"Failed to paraphrase '{question[:50]}...': {e}")
-            return []
+        return _generate_json_array(
+            self.client,
+            prompt,
+            context=f"Paraphrasing '{question[:50]}...'",
+        )[:num_variations]
 
     def paraphrase_batch(
         self,
@@ -98,13 +155,27 @@ class KBQuestionGenerator:
         self.kb_chunks = self._load_kb_chunks()
 
     def _load_kb_chunks(self) -> list[str]:
-        """Load and chunk the Knowledge Base."""
+        """Load each row of the raw Knowledge Base as a grounded text chunk."""
         try:
-            df = pd.read_excel(config.KB_DATA, sheet_name="chunks")
-            # Assuming there's a text column (adjust as needed)
-            chunks = df["text"].dropna().astype(str).tolist()
-            logger.info(f"Loaded {len(chunks)} KB chunks")
-            return chunks[:100]  # Limit to first 100 chunks for initial run
+            df = pd.read_excel(config.KB_DATA).dropna(how="all")
+            if config.KB_RECORD_LIMIT > 0 and len(df) > config.KB_RECORD_LIMIT:
+                df = df.sample(n=config.KB_RECORD_LIMIT, random_state=42)
+
+            chunks = []
+            for _, row in df.iterrows():
+                fields = []
+                for column, value in row.items():
+                    if pd.notna(value) and str(value).strip():
+                        fields.append(f"{column}: {str(value).strip()}")
+                if fields:
+                    chunks.append(" | ".join(fields))
+            logger.info(
+                "Loaded %d raw KB records from %s (limit=%s)",
+                len(chunks),
+                config.KB_DATA,
+                config.KB_RECORD_LIMIT or "all",
+            )
+            return chunks
         except Exception as e:
             logger.warning(f"Failed to load KB chunks: {e}. Using empty list.")
             return []
@@ -142,15 +213,11 @@ Format as JSON array with "question" and "answer" keys:
 
 Return only valid JSON."""
 
-        try:
-            response = self.client.generate(prompt)
-            questions = json.loads(response)
-            if not isinstance(questions, list):
-                return []
-            return questions
-        except (json.JSONDecodeError, Exception) as e:
-            logger.error(f"Failed to generate questions from chunk: {e}")
-            return []
+        return _generate_json_array(
+            self.client,
+            prompt,
+            context="KB question generation",
+        )[:num_questions]
 
     def generate_batch(self, num_questions_per_chunk: int = 3) -> list[dict]:
         """Generate questions from all KB chunks.
@@ -176,7 +243,11 @@ Return only valid JSON."""
         Returns:
             List of dicts with 'question' and 'answer' keys
         """
-        prompt = """Generate {num_samples} realistic questions about Electric Vehicles and related topics
+        all_questions = []
+        batch_size = 10
+        for batch_start in range(0, num_samples, batch_size):
+            current_batch_size = min(batch_size, num_samples - batch_start)
+            prompt = f"""Generate {current_batch_size} realistic questions about Electric Vehicles and related topics
 that CANNOT be answered using a knowledge base about EV Intelligence, charging infrastructure,
 and logistics in Georgia.
 
@@ -191,25 +262,62 @@ Format as JSON:
 
 Return only valid JSON."""
 
-        try:
-            response = self.client.generate(prompt)
-            questions = json.loads(response)
-            return questions if isinstance(questions, list) else []
-        except Exception as e:
-            logger.error(f"Failed to generate adversarial questions: {e}")
-            return []
+            logger.info(
+                "Generating adversarial batch %d/%d",
+                batch_start // batch_size + 1,
+                (num_samples + batch_size - 1) // batch_size,
+            )
+            questions = _generate_json_array(
+                self.client,
+                prompt,
+                context="Adversarial question generation",
+                max_tokens=2048,
+            )
+            all_questions.extend(questions[:current_batch_size])
+
+        return all_questions[:num_samples]
 
 
 def load_validated_questions() -> list[dict]:
-    """Load the 50 human-validated questions."""
+    """Load all human-validated questions from the configured workbook."""
     try:
         df = pd.read_excel(config.HUMAN_QA_EXCEL)
+        columns = {
+            str(column).strip().casefold(): column
+            for column in df.columns
+            if pd.notna(column)
+        }
+
+        def find_column(candidates: tuple[str, ...]):
+            for candidate in candidates:
+                if candidate.casefold() in columns:
+                    return columns[candidate.casefold()]
+            return None
+
+        question_column = find_column(("Question", "Questions"))
+        answer_column = find_column(
+            ("Human validated answers", "Human validated answer", "Answer", "Answers")
+        )
+        if question_column is None or answer_column is None:
+            raise ValueError(
+                "Expected question and answer columns; found "
+                f"{[str(column) for column in df.columns if pd.notna(column)]}"
+            )
+
         questions = []
         for _, row in df.iterrows():
+            question = row.get(question_column)
+            answer = row.get(answer_column)
+            if pd.isna(question) or pd.isna(answer):
+                continue
+            question = str(question).strip()
+            answer = str(answer).strip()
+            if not question or not answer:
+                continue
             questions.append(
                 {
-                    "question": str(row.get("question", "")),
-                    "answer": str(row.get("answer", "")),
+                    "question": question,
+                    "answer": answer,
                 }
             )
         logger.info(f"Loaded {len(questions)} validated questions")

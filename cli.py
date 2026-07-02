@@ -4,9 +4,14 @@ import logging
 import sys
 from pathlib import Path
 
-from .data_augmentation import augment_dataset
-from .dataset_formatter import format_validated_dataset
-from .validation import validate_augmented_dataset
+try:
+    from .data_augmentation import augment_dataset
+    from .dataset_formatter import format_validated_dataset
+    from .validation import validate_augmented_dataset
+except ImportError:
+    from data_augmentation import augment_dataset
+    from dataset_formatter import format_validated_dataset
+    from validation import validate_augmented_dataset
 
 logger = logging.getLogger(__name__)
 

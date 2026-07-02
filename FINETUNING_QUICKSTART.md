@@ -5,24 +5,27 @@ This guide walks you through running the complete fine-tuning pipeline to genera
 ## Prerequisites
 
 ✅ **Already have:**
-- 50 human-validated Q&A pairs (`kb/Human validated 50 questions.xlsx`)
-- Knowledge Base (`kb/GNEM - Auto Landscape Lat Long Updated.xlsx`)
+- 42 human-validated Q&A pairs (`kb/Human validated questions.xlsx`)
+- Knowledge Base (`kb/GNEM_Excel_Data.xlsx`)
 - Ollama running with Qwen2.5:14b
+
+Each run uses all 205 raw KB records. Set `KB_RECORD_LIMIT` to a positive
+number only when you intentionally want a smaller test run.
 
 ⚠️ **For GPT-4o/Gemini (optional, for better data quality):**
 - OpenAI API key: `OPENAI_API_KEY=sk-...`
 - OR Google Gemini API key: `GOOGLE_API_KEY=...`
 
-## Option 1: Using Local Ollama with Large Model (Free, Best Quality)
+## Option 1: Using Local Ollama with GPT-OSS 120B
 
-**Recommended:** Use **Llama 2 70B** (or Mistral 7B if you have less VRAM)
+The active configuration uses **`gpt-oss:120b`** as the local teacher model.
 
 ### Setup (5-30 minutes depending on internet)
 
 1. **Pull the large model:**
    ```bash
-   # Option A: Llama 2 70B (best quality, requires 45GB VRAM)
-   ollama pull llama2:70b
+   # Configured teacher model (~65GB Ollama artifact)
+   ollama pull gpt-oss:120b
    
    # Option B: Mistral 7B (good quality, requires 8GB VRAM, faster)
    ollama pull mistral
@@ -41,13 +44,13 @@ This guide walks you through running the complete fine-tuning pipeline to genera
    ```bash
    DATA_GEN_LLM_PROVIDER=ollama
    OLLAMA_BASE_URL=http://localhost:11434
-   DATA_GEN_OLLAMA_MODEL=llama2:70b    # or mistral / orca-mini:13b
+   DATA_GEN_OLLAMA_MODEL=gpt-oss:120b
    DATA_GEN_TEMPERATURE=0.7
    ```
 
 4. **Run the pipeline:**
    ```bash
-   python -m georgia_ev_intelligence.finetuning.cli pipeline
+   python3 -m cli pipeline
    ```
 
    This will:
@@ -83,7 +86,7 @@ This guide walks you through running the complete fine-tuning pipeline to genera
 
 3. **Run the pipeline:**
    ```bash
-   python -m georgia_ev_intelligence.finetuning.cli pipeline \
+   python3 -m cli pipeline \
      --paraphrase-count 10 \
      --kb-questions-per-chunk 5
    ```
@@ -126,7 +129,7 @@ This guide walks you through running the complete fine-tuning pipeline to genera
 
 3. **Run the pipeline:**
    ```bash
-   python -m georgia_ev_intelligence.finetuning.cli pipeline
+   python3 -m cli pipeline
    ```
 
 ---
@@ -136,18 +139,18 @@ This guide walks you through running the complete fine-tuning pipeline to genera
 ### Step 1: Generate Synthetic Q&A Pairs
 
 ```bash
-python -m georgia_ev_intelligence.finetuning.cli augment \
+python3 -m cli augment \
   --paraphrase-count 8 \
   --kb-questions-per-chunk 3
 ```
 
-**Output:** `georgia_ev_intelligence/outputs/finetuning/augmented_questions.jsonl`  
+**Output:** `outputs/finetuning/augmented_questions.jsonl`  
 **Expected:** ~1000-1500 Q&A pairs
 
 ### Step 2: Validate with LLM-as-Judge
 
 ```bash
-python -m georgia_ev_intelligence.finetuning.cli validate \
+python3 -m cli validate \
   --min-score 4
 ```
 
@@ -160,7 +163,7 @@ python -m georgia_ev_intelligence.finetuning.cli validate \
 ### Step 3: Format for Fine-Tuning
 
 ```bash
-python -m georgia_ev_intelligence.finetuning.cli format \
+python3 -m cli format \
   --train-ratio 0.8
 ```
 
@@ -174,7 +177,7 @@ python -m georgia_ev_intelligence.finetuning.cli format \
 import json
 
 # Check training data
-with open("georgia_ev_intelligence/outputs/finetuning/train_dataset.jsonl") as f:
+with open("outputs/finetuning/train_dataset.jsonl") as f:
     examples = [json.loads(line) for line in f]
     print(f"Training examples: {len(examples)}")
     print(f"First example:\n{json.dumps(examples[0], indent=2)}")
@@ -186,7 +189,7 @@ with open("georgia_ev_intelligence/outputs/finetuning/train_dataset.jsonl") as f
 
 ### For More Synthetic Data (Lower Quality)
 ```bash
-python -m georgia_ev_intelligence.finetuning.cli pipeline \
+python3 -m cli pipeline \
   --paraphrase-count 15 \
   --kb-questions-per-chunk 5 \
   --min-score 3
@@ -194,7 +197,7 @@ python -m georgia_ev_intelligence.finetuning.cli pipeline \
 
 ### For Higher Quality (Fewer Examples)
 ```bash
-python -m georgia_ev_intelligence.finetuning.cli pipeline \
+python3 -m cli pipeline \
   --paraphrase-count 5 \
   --kb-questions-per-chunk 2 \
   --min-score 5
@@ -203,12 +206,12 @@ python -m georgia_ev_intelligence.finetuning.cli pipeline \
 ### Recommended for Your Setup
 ```bash
 # Using local Qwen2.5 (free, ~2-3 hours)
-python -m georgia_ev_intelligence.finetuning.cli pipeline \
+python3 -m cli pipeline \
   --paraphrase-count 8 \
   --kb-questions-per-chunk 3
 
 # Using GPT-4o (faster, ~30 min, ~$10 cost)
-python -m georgia_ev_intelligence.finetuning.cli pipeline \
+python3 -m cli pipeline \
   --paraphrase-count 10 \
   --kb-questions-per-chunk 5
 ```
@@ -222,7 +225,7 @@ python -m georgia_ev_intelligence.finetuning.cli pipeline \
 1. **Fine-tune the model** (Phase 4):
    ```bash
    # Coming in next phase
-   python -m georgia_ev_intelligence.finetuning.qwen_finetuner \
+   python3 -m qwen_finetuner \
      --model Qwen/Qwen2.5-14B \
      --train-data train_dataset.jsonl \
      --val-data val_dataset.jsonl \
@@ -232,14 +235,14 @@ python -m georgia_ev_intelligence.finetuning.cli pipeline \
 2. **Evaluate** (Phase 5):
    ```bash
    # Coming in next phase
-   python -m georgia_ev_intelligence.finetuning.evaluation \
+   python3 -m evaluation \
      --model-path checkpoints/qwen_finetuned
    ```
 
 3. **Deploy to Ollama** (Phase 6):
    ```bash
    # Coming in next phase
-   python -m georgia_ev_intelligence.finetuning.ollama_integration \
+   python3 -m ollama_integration \
      --model-path checkpoints/qwen_finetuned
    ```
 
@@ -281,7 +284,7 @@ OPENAI_API_KEY=sk-...
 After completing the pipeline, you should have:
 
 ```
-georgia_ev_intelligence/outputs/finetuning/
+outputs/finetuning/
 ├── augmented_questions.jsonl      # ~1500 raw pairs
 ├── validated_questions.jsonl      # ~1000 high-quality pairs
 ├── validation_report.json         # Scoring stats
@@ -327,6 +330,6 @@ georgia_ev_intelligence/outputs/finetuning/
 
 ## Need Help?
 
-1. Check `georgia_ev_intelligence/finetuning/README.md` for detailed documentation
+1. Check `README.md` for detailed documentation
 2. Review logs for specific errors
 3. See `FINETUNING_PLAN.md` for the full strategy

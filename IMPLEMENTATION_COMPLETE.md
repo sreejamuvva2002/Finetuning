@@ -8,7 +8,7 @@ The Finetuning repository (`sreejamuvva2002/Finetuning`) now contains all necess
 
 ### ✅ Core Components Available
 
-The following Python modules have been implemented in `georgia_ev_intelligence/finetuning/`:
+The following Python modules have been implemented in ``:
 
 1. **`__init__.py`** - Package initialization
 2. **`__main__.py`** - Entry point for module
@@ -42,7 +42,7 @@ Two comprehensive guides have been created:
 1. **Test the current implementation:**
    ```bash
    cd /path/to/Finetuning
-   python -m georgia_ev_intelligence.finetuning.cli augment --help
+   python3 -m cli augment --help
    ```
 
 2. **Verify dependencies are installed:**
@@ -81,35 +81,35 @@ Two comprehensive guides have been created:
 The following modules are referenced in the plan but not yet implemented:
 
 ### High Priority (Required for MVP)
-1. **`georgia_ev_intelligence/finetuning/kb_question_generator.py`**
+1. **`kb_question_generator.py`**
    - Generates 3-5 diverse questions per KB chunk
    - Provides grounded answers from KB text
    - Lines of code: ~250-300
 
-2. **`georgia_ev_intelligence/finetuning/coverage_analyzer.py`**
+2. **`coverage_analyzer.py`**
    - Analyzes KB coverage in generated questions
    - Identifies topic gaps
    - Lines of code: ~150-200
 
-3. **`georgia_ev_intelligence/finetuning/deduplication.py`**
+3. **`deduplication.py`**
    - Semantic deduplication using embeddings
    - Removes near-duplicates (cosine similarity > 0.85)
    - Lines of code: ~100-150
 
-4. **`georgia_ev_intelligence/finetuning/qwen_finetuner.py`**
+4. **`qwen_finetuner.py`**
    - QLoRA fine-tuning implementation using Unsloth
    - LoRA adapter training
    - Checkpoint management
    - Lines of code: ~300-400
 
-5. **`georgia_ev_intelligence/finetuning/evaluation.py`**
+5. **`evaluation.py`**
    - BLEU, ROUGE metrics
    - Semantic similarity evaluation
    - Answer quality comparison
    - Lines of code: ~200-250
 
 ### Medium Priority (Integration & Polish)
-6. **`georgia_ev_intelligence/finetuning/ollama_integration.py`**
+6. **`ollama_integration.py`**
    - Export fine-tuned model to HF format
    - Create Ollama Modelfile
    - Integration testing
@@ -210,7 +210,7 @@ Finetuning Pipeline Flow:
 
 ### Test Data Augmentation
 ```bash
-python -m georgia_ev_intelligence.finetuning.cli augment \
+python3 -m cli augment \
   --paraphrase-count 2 \
   --kb-questions-per-chunk 1 \
   --limit 5
@@ -218,14 +218,14 @@ python -m georgia_ev_intelligence.finetuning.cli augment \
 
 ### Test Validation
 ```bash
-python -m georgia_ev_intelligence.finetuning.cli validate \
+python3 -m cli validate \
   --min-score 3 \
   --limit 5
 ```
 
 ### Format Dataset
 ```bash
-python -m georgia_ev_intelligence.finetuning.cli format \
+python3 -m cli format \
   --train-ratio 0.8
 ```
 

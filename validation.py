@@ -8,8 +8,12 @@ from typing import Optional
 
 import pandas as pd
 
-from . import config
-from .llm_client import LLMClient, get_client
+try:
+    from . import config
+    from .llm_client import LLMClient, get_client
+except ImportError:
+    import config
+    from llm_client import LLMClient, get_client
 
 logger = logging.getLogger(__name__)
 

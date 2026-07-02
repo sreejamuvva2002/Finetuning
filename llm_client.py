@@ -7,7 +7,10 @@ from typing import Optional
 
 import requests
 
-from . import config
+try:
+    from . import config
+except ImportError:
+    import config
 
 
 class LLMClient(ABC):

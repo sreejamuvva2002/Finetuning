@@ -1,0 +1,230 @@
+{
+  "total_scored": 979,
+  "passed": 374,
+  "failed": 605,
+  "acceptance_rate": 0.38202247191011235,
+  "passed_examples": [
+    {
+      "question": "Which county have the highest total Employment among Tier 1 suppliers only?",
+      "answer": "Troup County has the highest total Employment among Tier 1 suppliers with a total of 2,435 employees",
+      "scores": {
+        "accuracy": 4,
+        "completeness": 5,
+        "relevance": 5,
+        "comments": "The answer directly names a county and provides the total employment figure, fully addressing the question. Assuming the data is correct, accuracy is high; however, without verification against the underlying dataset there is slight uncertainty."
+      },
+      "avg_score": 4.666666666666667
+    },
+    {
+      "question": "Which county has the highest total employment across all companies, and what is the combined employment in that county?",
+      "answer": "Hall County has the highest total employment across all companies: 314452.",
+      "scores": {
+        "accuracy": 3,
+        "completeness": 5,
+        "relevance": 5,
+        "comments": "The answer provides both the county name and a combined employment figure, satisfying the question's requirements (high completeness). However, without verification against the underlying dataset, we cannot confirm that Hall County and the figure 314,452 are correct, so accuracy is moderate. The query about county-level employment is directly relevant to EV intelligence and logistics analysis."
+      },
+      "avg_score": 4.333333333333333
+    },
+    {
+      "question": "For Hyundai Metaplant, how many of its Georgia-based EV component suppliers have fewer than 200 employees, flagging potential capacity fragility?",
+      "answer": "For Hyundai Metaplant, there are 6 Georgia-based EV component suppliers with less than 200 employees, flagging potential capacity fragility.\nEnchem America Inc. | Employment: 155\nF&P Georgia Manufacturing | Employment: 104\nHyundai Motor Group | Employment: 164\nHyundai Transys Georgia Powertrain | Employment: 130\nIMMI | Employment: 100\nRacemark International LLC | Employment: 120",
+      "scores": {
+        "accuracy": 4,
+        "completeness": 5,
+        "relevance": 5,
+        "comments": "The answer correctly provides the requested count (6) and lists six Georgia-based suppliers each under 200 employees, which satisfies the question. Minor concern: inclusion of entities like Hyundai Motor Group may not be true external component suppliers, slightly affecting accuracy."
+      },
+      "avg_score": 4.666666666666667
+    },
+    {
+      "question": "Which county tops the list for total employment among Tier\u202f1 suppliers?",
+      "answer": "Troup County has the highest total Employment among Tier 1 suppliers with a total of 2,435 employees",
+      "scores": {
+        "accuracy": 4,
+        "completeness": 5,
+        "relevance": 5,
+        "comments": "The answer directly names the county and provides the employment figure, fully addressing the question and staying on-topic for EV supply\u2011chain analysis. Assuming the dataset lists Troup County as top, accuracy is high but not certain without verification."
+      },
+      "avg_score": 4.666666666666667
+    },
+    {
+      "question": "In terms of Tier\u20111 supplier workforce, which county has the greatest number of employees?",
+      "answer": "Troup County has the highest total Employment among Tier 1 suppliers with a total of 2,435 employees",
+      "scores": {
+        "accuracy": 3,
+        "completeness": 5,
+        "relevance": 5,
+        "comments": "The answer directly names a county and provides an employee count, fully addressing the question, which is relevant to EV Tier\u20111 supplier logistics. However, without verification against the actual dataset, the correctness of Troup County being the top cannot be confirmed, so accuracy receives a moderate rating."
+      },
+      "avg_score": 4.333333333333333
+    },
+    {
+      "question": "What's the county with the most employees when looking solely at Tier 1 suppliers?",
+      "answer": "Troup County has the highest total Employment among Tier 1 suppliers with a total of 2,435 employees",
+      "scores": {
+        "accuracy": 4,
+        "completeness": 5,
+        "relevance": 5,
+        "comments": "The answer directly names a county (Troup County) and gives the employee count, fully addressing the question. Assuming the underlying EV Intelligence data indeed shows Troup County as the top Tier\u202f1 supplier location, the response is accurate; minor uncertainty about dataset verification lowers the accuracy score slightly."
+      },
+      "avg_score": 4.666666666666667
+    },
+    {
+      "question": "Among Tier\u00a01 suppliers, which county boasts the largest employment figure?",
+      "answer": "Troup County has the highest total Employment among Tier 1 suppliers with a total of 2,435 employees",
+      "scores": {
+        "accuracy": 4,
+        "completeness": 5,
+        "relevance": 5,
+        "comments": "The answer directly names a county (Troup County) and provides the employment figure, fully addressing the question. Assuming the data matches the source, accuracy is high but cannot be verified here, so a slight deduction. Completeness is perfect, and the query is clearly relevant to EV supply\u2011chain intelligence."
+      },
+      "avg_score": 4.666666666666667
+    },
+    {
+      "question": "Identify the county that leads in total employee count among Tier\u202f1 suppliers.",
+      "answer": "Troup County has the highest total Employment among Tier 1 suppliers with a total of 2,435 employees",
+      "scores": {
+        "accuracy": 4,
+        "completeness": 5,
+        "relevance": 5,
+        "comments": "The answer directly names a county and provides the employee total, fully addressing the question. Assuming Troup County is indeed the top according to the EV Intelligence dataset, accuracy is high; however, without verification it cannot be rated perfect."
+      },
+      "avg_score": 4.666666666666667
+    },
+    {
+      "question": "Which county has the highest sum of jobs for Tier\u20111 suppliers exclusively?",
+      "answer": "Troup County has the highest total Employment among Tier 1 suppliers with a total of 2,435 employees",
+      "scores": {
+        "accuracy": 5,
+        "completeness": 5,
+        "relevance": 5,
+        "comments": "The answer directly names the county (Troup) and provides the total Tier\u20111 supplier jobs, fully addressing the query. It is pertinent to EV supply chain employment analysis."
+      },
+      "avg_score": 5.0
+    },
+    {
+      "question": "For Tier\u202f1 suppliers alone, which county shows the maximum total Employment?",
+      "answer": "Troup County has the highest total Employment among Tier 1 suppliers with a total of 2,435 employees",
+      "scores": {
+        "accuracy": 2,
+        "completeness": 5,
+        "relevance": 5,
+        "comments": "The answer names a county and gives an employment figure, fully addressing the query, but there is no evidence that Troup County is indeed the top Tier\u202f1 supplier location; without supporting data the claim is likely inaccurate."
+      },
+      "avg_score": 4.0
+    }
+  ],
+  "failed_examples": [
+    {
+      "question": "Show all \"Tier 1/2\" suppliers in Georgia, list their EV Supply Chain Role and Product / Service.",
+      "answer": "There are 18 Tier 1/2 companies in Georgia.\nF&P Georgia Manufacturing [Tier 1/2] | Role: Battery Pack | Product: Lithium-ion battery recycler and raw materials provider\nFouts Brothers Fire Equipment [Tier 1/2] | Role: General Automotive | Product: Automotive body parts and electronics Cylinder-head and specialty gaskets, housing modules and shielding systems for engines, transmissions, exhaust systems and auxiliary units\nHitachi Astemo [Tier 1/2] | Role: General Automotive | Product: Car audio systems\nHitachi Astemo Americas Inc. [Tier 1/2] | Role: Battery Cell | Product: Battery cells for electric mobility\nHollingsworth & Vose Co. [Tier 1/2] | Role: Battery Pack | Product: Lithium-ion battery materials\nHonda Development & Manufacturing [Tier 1/2] | Role: Battery Cell | Product: Battery cells for electric mobility\nHwashin [Tier 1/2] | Role: General Automotive | Product: Modules and storage systems\nHyundai & LG Energy Solution (LGES) [Tier 1/2] | Role: General Automotive | Product: Storage batteries\nHyundai Industrial Co. [Tier 1/2] | Role: General Automotive | Product: Automotive batteries\nHyundai MOBIS (Georgia) [Tier 1/2] | Role: General Automotive | Product: Capacitors, electronic automotive components\nHyundai Motor Group [Tier 1/2] | Role: Battery Pack | Product: Battery parts for electric vehicles\nHyundai Transys Georgia Powertrain [Tier 1/2] | Role: Thermal Management | Product: Electrical heaters, control units, and actuators\nHyundai Transys Georgia Seating Systems [Tier 1/2] | Role: General Automotive | Product: Automotive electronics, resonators, capacitors, resistors, electronics and electronic parts\nIMMI [Tier 1/2] | Role: Battery Pack | Product: Battery electrolyte\nIMS Gear Georgia Inc. [Tier 1/2] | Role: General Automotive | Product: Car audio systems\nInalfa Roof Systems Inc. [Tier 1/2] | Role: General Automotive | Product: Automotive electronic safety systems\nJAC Products Inc. [Tier 1/2] | Role: General Automotive | Product: Switches, resistors and related products\nJefferson Southern Corp. [Tier 1/2] | Role: General Automotive | Product: High current switches and resistors for automotive HVAC systems",
+      "scores": {
+        "accuracy": 2,
+        "completeness": 2,
+        "relevance": 5,
+        "comments": "The answer attempts to list Tier\u202f1/2 suppliers in Georgia but includes many companies that are not EV\u2011related or not Tier\u202f1/2, repeats entries with inconsistent roles, and likely omits numerous valid suppliers. Therefore it is only partially correct and incomplete, though the question itself is highly relevant to EV intelligence."
+      },
+      "avg_score": 3.0
+    },
+    {
+      "question": "Which Georgia companies are classified under Battery Cell or Battery Pack roles, and what tier is each assigned?",
+      "answer": "There are 6 companies found with Battery Cell or Battery Pack roles.    \n\nF&P Georgia Manufacturing [Tier 1/2] | Role: Battery Pack \nHitachi Astemo Americas Inc. [Tier 1/2] | Role: Battery Cell \nHollingsworth & Vose Co. [Tier 1/2] | Role: Battery Pack \nHonda Development & Manufacturing [Tier 1/2] | Role: Battery Cell \nHyundai Motor Group [Tier 1/2] | Role: Battery Pack \nIMMI [Tier 1/2] | Role: Battery Pack",
+      "scores": {
+        "accuracy": 2,
+        "completeness": 2,
+        "relevance": 5,
+        "comments": "The answer lists six companies with Battery Cell or Pack roles, but many of those firms are not clearly Georgia\u2011based and the tier information is vague ('Tier 1/2' instead of a specific tier). It likely omits other relevant Georgia companies, so the response is only partially correct and incomplete, though the question itself is highly relevant to EV intelligence."
+      },
+      "avg_score": 3.0
+    },
+    {
+      "question": "Map all Thermal Management suppliers in Georgia and show which Primary OEMs they are linked to.",
+      "answer": "There are 5 Thermal Management companies in Georgia.\nZF Gainesville LLC | OEMs: Not specified\nFreudenberg-NOK | OEMs: Multiple OEMs\nHyundai Transys Georgia Powertrain | OEMs: Hyundai Kia Rivian\nNovelis Inc. | OEMs: Multiple OEMs\nPeerless-Winsmith Inc. | OEMs: Multiple OEMs",
+      "scores": {
+        "accuracy": 2,
+        "completeness": 1,
+        "relevance": 5,
+        "comments": "The answer provides a very limited list of suppliers and vague OEM associations, many likely missing or incorrect. It does not comprehensively map all thermal\u2011management suppliers in Georgia nor clearly link primary OEMs, making it inaccurate and incomplete despite being on-topic."
+      },
+      "avg_score": 2.6666666666666665
+    },
+    {
+      "question": "List every Georgia company classified under Power Electronics or Charging Infrastructure, along with their Employment size.",
+      "answer": "There are 4 companies classified under Power Electronics or Charging Infrastructure:\nGSC Steel Stamping LLC | Role: Power Electronics | Employment: 350\nMorgan Corp. | Role: Charging Infrastructure | Employment: 320\nYazaki North America | Role: Power electronics, sensors, and EV systems | Employment: 230000\nZF Gainesville LLC has a combined role (EV thermal management and power electronics) | Employment: 17500",
+      "scores": {
+        "accuracy": 2,
+        "completeness": 1,
+        "relevance": 5,
+        "comments": "The answer lists a few companies but includes likely incorrect entries (e.g., GSC Steel Stamping and Yazaki's employment figure) and omits many other Georgia firms in the specified categories. Employment numbers are dubious, and the list is not exhaustive, so accuracy and completeness are low despite being on-topic."
+      },
+      "avg_score": 2.6666666666666665
+    },
+    {
+      "question": "Which companies are classified as Direct Manufacturer, and what EV Supply Chain Roles do they cover?",
+      "answer": "Original Equipment Manufacturer companies (11):\nKia Georgia Inc. | EV Supply Chain Role: Vehicle Assembly\nMinebea AccessSolutions USA Inc. | EV Supply Chain Role: General Automotive\nSuperior Essex Inc. | EV Supply Chain Role: Vehicle Assembly\nSuzuki Manufacturing of America Corp. | EV Supply Chain Role: Vehicle Assembly\nTCI Powder Coatings | EV Supply Chain Role: Vehicle Assembly\nTDK Components USA Inc. | EV Supply Chain Role: Vehicle Assembly\nTE Connectivity | EV Supply Chain Role: Vehicle Assembly\nTeklas USA | EV Supply Chain Role: Vehicle Assembly\nTextron Specialized Vehicles | EV Supply Chain Role: Vehicle Assembly\nThermal Ceramics Inc. | EV Supply Chain Role: Vehicle Assembly\nThomson Plastics Inc. | EV Supply Chain Role: Vehicle Assembly",
+      "scores": {
+        "accuracy": 2,
+        "completeness": 2,
+        "relevance": 5,
+        "comments": "The answer lists a set of OEM companies but does not clearly align them with the 'Direct Manufacturer' classification used in EV Intelligence, and many roles are oversimplified (mostly just 'Vehicle Assembly'). It likely omits several direct manufacturers and other supply\u2011chain roles, making it only partially correct and incomplete, though the question itself is highly relevant to the EV domain."
+      },
+      "avg_score": 3.0
+    },
+    {
+      "question": "What locations does Novelis Inc. operate in, and what primary facility types are associated with each location?",
+      "answer": "Novelis Inc. has three operating entries in Georgia, and all three are located in Atlanta, Fulton County, with each one classified as a Manufacturing Plant as its primary facility type.",
+      "scores": {
+        "accuracy": 1,
+        "completeness": 1,
+        "relevance": 4,
+        "comments": "The answer is factually incorrect and overly narrow; Novelis operates in many locations worldwide, not just three entries in Atlanta. It fails to provide the full list of locations or facility types, making it incomplete. However, the query itself is relevant to EV supply chain intelligence."
+      },
+      "avg_score": 2.0
+    },
+    {
+      "question": "In Gwinnett County, which company has the highest Employment and what is its EV Supply Chain Role?",
+      "answer": "WIKA USA has the highest employment in Gwinnett County (Employment: 250000; Role: HV and LV wiring harnesses for EVs and ICE vehicles).",
+      "scores": {
+        "accuracy": 1,
+        "completeness": 2,
+        "relevance": 5,
+        "comments": "The answer is factually incorrect \u2013 WIKA USA does not have 250,000 employees in Gwinnett County and does not supply HV/LV wiring harnesses. Therefore the response fails to accurately address the question, and while it provides a company name and role, the information is wrong, making the completeness low as well. The question itself is relevant to EV supply\u2011chain intelligence."
+      },
+      "avg_score": 2.6666666666666665
+    },
+    {
+      "question": "Identify all Vehicle Assembly facilities in Georgia and list the corresponding Primary OEM associated with each facility.",
+      "answer": "There are 10 Vehicle Assembly OEMs along with their Primary OEMs are:\nKia Georgia Inc. | Primary OEMs: Club Car LLC\nSuperior Essex Inc. | Primary OEMs: Hyundai Motor Group\nSuzuki Manufacturing of America Corp. | Primary OEMs: Rivian Automotive\nTCI Powder Coatings | Primary OEMs: Kia Georgia Inc.\nTDK Components USA Inc. | Primary OEMs: Mercedes-Benz USA LLC\nTE Connectivity | Primary OEMs: Blue Bird Corp.\nTeklas USA | Primary OEMs: Yamaha Motor Manufacturing Corp.\nTextron Specialized Vehicles | Primary OEMs: Textron Specialized Vehicles\nThermal Ceramics Inc. | Primary OEMs: SK Battery America\nThomson Plastics Inc. | Primary OEMs: Archer Aviation Inc.",
+      "scores": {
+        "accuracy": 1,
+        "completeness": 1,
+        "relevance": 2,
+        "comments": "The answer lists companies that are not vehicle assembly facilities in Georgia and mismatches primary OEMs, showing incorrect information and missing the actual assembly plants. It therefore fails to accurately or comprehensively address the question, though it is loosely related to the automotive domain."
+      },
+      "avg_score": 1.3333333333333333
+    },
+    {
+      "question": "Identify the primary products and services associated with Sewon America Inc. across its different operational sites in Georgia.",
+      "answer": "Sewon America Inc. has three operating entries in Georgia and all three are located in LaGrange, Troup County, Georgia.\nSewon America Inc. | Product: Motor vehicle engines and parts\nSewon America Inc. | Product: Fire truck bodies\nSewon America Inc. | Product: Automotive aftermarket parts",
+      "scores": {
+        "accuracy": 2,
+        "completeness": 2,
+        "relevance": 3,
+        "comments": "The answer provides a limited list of products and incorrectly states that all operational sites are in LaGrange, which is likely inaccurate. It omits any mention of services and does not differentiate offerings across different locations, making it incomplete. The topic is moderately relevant to automotive/EV supply chain intelligence."
+      },
+      "avg_score": 2.3333333333333335
+    },
+    {
+      "question": "List all Tier 2/3 companies in Georgia with primary involvement in the electric vehicle or battery supply chain and specify their respective roles.",
+      "answer": "There are 3 companies with primary involvement in the electric vehicle or battery supply chain. \n\nDuckyang | Role: General Automotive \nGSC Steel Stamping LLC | Role: Power Electronics \nEnchem America Inc. | Role: General Automotive",
+      "scores": {
+        "accuracy": 1,
+        "completeness": 1,
+        "relevance": 5,
+        "comments": "The answer does not correctly address the question; it lists only three companies, many of which are not known Tier\u202f2/3 EV or battery suppliers in Georgia and their roles appear inaccurate. The response is far from comprehensive, missing numerous relevant firms, but the original query itself is clearly within the EV intelligence domain."
+      },
+      "avg_score": 2.3333333333333335
+    }
+  ]
+}

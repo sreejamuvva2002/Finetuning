@@ -4,7 +4,7 @@
 
 This document outlines the strategy for fine-tuning a local Qwen model (currently Qwen2.5:14b in Ollama) using Knowledge Distillation from a powerful LLM to improve domain-specific performance on EV Intelligence tasks.
 
-**Starting Point:** 50 human-validated Q&A pairs  
+**Starting Point:** 42 human-validated Q&A pairs  
 **Goal:** Create a dataset of 500-1000+ synthetic Q&A pairs, validate them, and fine-tune the local model  
 **Target Model:** Qwen2.5:14b (via Ollama)  
 **Fine-tuning Method:** QLoRA (Parameter-Efficient Fine-Tuning)
@@ -14,15 +14,14 @@ This document outlines the strategy for fine-tuning a local Qwen model (currentl
 ## Current System State
 
 ### What We Have
-- **Knowledge Base:** `kb/GNEM - Auto Landscape Lat Long Updated.xlsx` (~76KB)
-- **Initial Dataset:** `kb/Human validated 50 questions.xlsx` (50 Q&A pairs)
-- **Vocabulary:** `kb/kb_vocabulary.xlsx` (vocabulary-driven filtering)
+- **Knowledge Base:** `kb/GNEM_Excel_Data.xlsx` (~76KB)
+- **Initial Dataset:** `kb/Human validated questions.xlsx` (42 Q&A pairs)
 - **Runtime:** Ollama with Qwen2.5:14b model
 - **Storage:** PostgreSQL + pgvector for retrieval
 - **Retrieval:** Hybrid (BM25 + dense vector) with cross-encoder reranking
 
 ### Current Limitations
-- Only 50 examples → insufficient for meaningful fine-tuning
+- Only 42 examples → insufficient for meaningful fine-tuning
 - Local Qwen2.5:14b may lack domain-specific EV knowledge
 - No fine-tuning pipeline in place
 
@@ -32,10 +31,10 @@ This document outlines the strategy for fine-tuning a local Qwen model (currentl
 
 ### Phase 1: Data Augmentation (Generate Synthetic Q&A Pairs)
 
-**Objective:** Expand 50 validated questions into 500-1000 synthetic examples.
+**Objective:** Expand 42 validated questions into 500-1000 synthetic examples.
 
 #### 1.1 Question Paraphrasing
-- **Input:** 50 validated questions
+- **Input:** 42 validated questions
 - **Process:**
   - Use a powerful external LLM (GPT-4o, Gemini 1.5 Pro) via API
   - For each question, generate 5-10 variations across:
@@ -43,7 +42,7 @@ This document outlines the strategy for fine-tuning a local Qwen model (currentl
     - Short keyword searches vs. conversational queries
     - Different phrasings with same intent
 - **Output:** ~350-500 paraphrased Q&A pairs
-- **File:** `georgia_ev_intelligence/finetuning/data_augmentation.py`
+- **File:** `data_augmentation.py`
 
 #### 1.2 KB-Driven Question Generation
 - **Input:** Raw KB text chunks + validated questions
@@ -53,7 +52,7 @@ This document outlines the strategy for fine-tuning a local Qwen model (currentl
   - Ask LLM to provide question + detailed answer grounded in KB text
   - Also generate adversarial "I don't know" questions
 - **Output:** ~500-1000 KB-driven Q&A pairs
-- **File:** `georgia_ev_intelligence/finetuning/kb_question_generator.py`
+- **File:** `kb_question_generator.py`
 
 **Key Prompts:**
 ```
@@ -86,17 +85,17 @@ Provide the question and the detailed answer grounded in the text."
     - Relevance (1-5): Is the question domain-specific?
   - Discard pairs scoring < 4 on any dimension
 - **Output:** Filtered, high-quality dataset
-- **File:** `georgia_ev_intelligence/finetuning/validation.py`
+- **File:** `validation.py`
 
 #### 2.2 Coverage Analysis
 - **Input:** Generated questions + KB vocabulary
 - **Process:**
-  - Extract keywords from generated questions
-  - Map keywords against KB sections
+  - Extract topics directly from generated questions and raw KB fields
+  - Map topics against KB sections
   - Identify gaps in coverage
   - Flag topic clusters with low question density
 - **Output:** Coverage report + identified gaps
-- **File:** `georgia_ev_intelligence/finetuning/coverage_analyzer.py`
+- **File:** `coverage_analyzer.py`
 
 #### 2.3 Deduplication
 - **Input:** All generated pairs
@@ -104,7 +103,7 @@ Provide the question and the detailed answer grounded in the text."
   - Semantic deduplication using embeddings
   - Remove near-duplicate questions (cosine similarity > 0.85)
 - **Output:** Final, deduplicated dataset
-- **File:** `georgia_ev_intelligence/finetuning/deduplication.py`
+- **File:** `deduplication.py`
 
 ---
 
@@ -115,7 +114,7 @@ Provide the question and the detailed answer grounded in the text."
 #### 3.1 Format Conversion
 - **Input:** Validated Q&A pairs (from Excel, JSON, or DataFrame)
 - **Output:** JSONL with ChatML format
-- **File:** `georgia_ev_intelligence/finetuning/dataset_formatter.py`
+- **File:** `dataset_formatter.py`
 
 **Output Format:**
 ```json
@@ -140,7 +139,7 @@ Provide the question and the detailed answer grounded in the text."
 #### 3.2 Train/Validation Split
 - 80% training, 20% validation
 - Stratified split by topic/keyword
-- File: `georgia_ev_intelligence/finetuning/dataset_formatter.py`
+- File: `dataset_formatter.py`
 
 ---
 
@@ -151,7 +150,7 @@ Provide the question and the detailed answer grounded in the text."
 #### 4.1 Training Infrastructure
 - **Framework:** Unsloth (optimized for Qwen/Llama)
 - **Method:** QLoRA with LoRA adapters
-- **File:** `georgia_ev_intelligence/finetuning/qwen_finetuner.py`
+- **File:** `qwen_finetuner.py`
 
 **Key Hyperparameters:**
 ```python
@@ -177,7 +176,7 @@ Provide the question and the detailed answer grounded in the text."
 - Run validation set through fine-tuned model
 - Compare answers with golden answers
 - Compute BLEU, ROUGE, semantic similarity metrics
-- File: `georgia_ev_intelligence/finetuning/evaluation.py`
+- File: `evaluation.py`
 
 ---
 
@@ -204,21 +203,18 @@ Provide the question and the detailed answer grounded in the text."
 ## Directory Structure
 
 ```
-georgia_ev_intelligence/
-├── finetuning/                          # NEW: Fine-tuning module
-│   ├── __init__.py
-│   ├── data_augmentation.py             # Phase 1.1: Paraphrasing
-│   ├── kb_question_generator.py         # Phase 1.2: KB-driven generation
-│   ├── validation.py                    # Phase 2.1: Accuracy scoring
-│   ├── coverage_analyzer.py             # Phase 2.2: Coverage analysis
-│   ├── deduplication.py                 # Phase 2.3: Deduplication
-│   ├── dataset_formatter.py             # Phase 3: Format conversion
-│   ├── qwen_finetuner.py                # Phase 4: Fine-tuning
-│   ├── evaluation.py                    # Phase 4: Evaluation metrics
-│   ├── ollama_integration.py            # Phase 5: Ollama deployment
-│   ├── config.py                        # Config & hyperparameters
-│   └── cli.py                           # Command-line interface
-│
+Finetuning/
+├── __init__.py
+├── __main__.py
+├── data_augmentation.py                 # Paraphrasing + raw-KB generation
+├── validation.py                        # LLM-as-judge scoring
+├── dataset_formatter.py                 # ChatML conversion
+├── llm_client.py                        # LLM provider clients
+├── config.py                            # Configuration and paths
+├── cli.py                               # Command-line interface
+├── kb/
+│   ├── GNEM_Excel_Data.xlsx
+│   └── Human validated questions.xlsx
 ├── outputs/
 │   └── finetuning/                      # Output datasets & models
 │       ├── augmented_questions.jsonl
@@ -227,9 +223,7 @@ georgia_ev_intelligence/
 │       ├── val_dataset.jsonl
 │       └── checkpoints/
 │           └── qwen_finetuned/
-│
-├── runtime_pipeline/                    # Existing modules
-└── ...
+└── requirements.txt
 ```
 
 ---

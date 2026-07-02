@@ -3,10 +3,9 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-ROOT = Path(__file__).resolve().parents[3]
-PACKAGE_DIR = ROOT / "georgia_ev_intelligence"
+ROOT = Path(__file__).resolve().parent
 KB_DIR = ROOT / "kb"
-OUTPUTS_DIR = PACKAGE_DIR / "outputs"
+OUTPUTS_DIR = ROOT / "outputs"
 FINETUNING_OUTPUTS_DIR = OUTPUTS_DIR / "finetuning"
 
 # Create output directory if it doesn't exist
@@ -31,10 +30,9 @@ def _env_optional_int(name: str, default: int) -> int:
 DATA_GEN_LLM_PROVIDER = _env_optional_str("DATA_GEN_LLM_PROVIDER", "ollama")
 
 # ---- Ollama Configuration (Local) ----
-# For data generation, use a large model: llama2:70b, mistral, neural-chat, etc.
-# Recommended: llama2:70b for best quality (requires ~45GB VRAM)
+# Use a strong teacher model for synthetic data generation.
 OLLAMA_BASE_URL = _env_optional_str("OLLAMA_BASE_URL", "http://localhost:11434")
-DATA_GEN_OLLAMA_MODEL = _env_optional_str("DATA_GEN_OLLAMA_MODEL", "llama2:70b")
+DATA_GEN_OLLAMA_MODEL = _env_optional_str("DATA_GEN_OLLAMA_MODEL", "gpt-oss:120b")
 
 # ---- vLLM Configuration (Local) ----
 VLLM_BASE_URL = _env_optional_str("VLLM_BASE_URL", "http://localhost:8000")
@@ -66,6 +64,9 @@ PARAPHRASE_COUNT = _env_optional_int("PARAPHRASE_COUNT", 8)
 
 # Number of KB-driven questions per KB chunk
 KB_QUESTIONS_PER_CHUNK = _env_optional_int("KB_QUESTIONS_PER_CHUNK", 3)
+
+# Maximum raw KB records used per run (0 means all records)
+KB_RECORD_LIMIT = _env_optional_int("KB_RECORD_LIMIT", 0)
 
 # Include adversarial "I don't know" questions
 INCLUDE_ADVERSARIAL = _env_optional_str("INCLUDE_ADVERSARIAL", "true").lower() == "true"
@@ -109,9 +110,8 @@ QUANTIZATION = _env_optional_str("QUANTIZATION", "4bit")  # "4bit" or "8bit"
 # Input/Output Paths
 # ============================================================================
 
-HUMAN_QA_EXCEL = KB_DIR / "Human validated 50 questions.xlsx"
-KB_VOCABULARY = KB_DIR / "kb_vocabulary.xlsx"
-KB_DATA = OUTPUTS_DIR / "Normalized_kb.xlsx"
+HUMAN_QA_EXCEL = KB_DIR / "Human validated questions.xlsx"
+KB_DATA = KB_DIR / "GNEM_Excel_Data.xlsx"
 
 # Output files
 AUGMENTED_QUESTIONS_JSONL = FINETUNING_OUTPUTS_DIR / "augmented_questions.jsonl"
