@@ -75,13 +75,23 @@ INCLUDE_ADVERSARIAL = _env_optional_str("INCLUDE_ADVERSARIAL", "true").lower() =
 # Validation Configuration
 # ============================================================================
 
-# Minimum score (1-5) to accept a generated pair
+# Minimum score (1-5) to accept a generated pair.
+# NOTE: acceptance requires EVERY dimension to meet its threshold, not the average
+# (an average can let a wrong-but-fluent answer through — see MIN_ACCURACY below).
 VALIDATION_MIN_SCORE = _env_optional_int("VALIDATION_MIN_SCORE", 4)
 
-# Enable semantic deduplication
+# Per-dimension acceptance thresholds (1-5). Accuracy is judged against the source of
+# truth (KB row or trusted reference answer), so it is the strictest gate. Relevance is a
+# property of the question, not answer correctness, so it is never allowed to rescue a
+# wrong answer — it just filters off-topic items.
+MIN_ACCURACY = _env_optional_int("MIN_ACCURACY", VALIDATION_MIN_SCORE)
+MIN_COMPLETENESS = _env_optional_int("MIN_COMPLETENESS", VALIDATION_MIN_SCORE)
+MIN_RELEVANCE = _env_optional_int("MIN_RELEVANCE", 3)
+
+# Enable semantic/textual deduplication before the train/val split.
 ENABLE_DEDUPLICATION = _env_optional_str("ENABLE_DEDUPLICATION", "true").lower() == "true"
 
-# Cosine similarity threshold for deduplication
+# Cosine similarity threshold for deduplication (reserved for embedding-based dedup).
 DEDUP_SIMILARITY_THRESHOLD = float(_env_optional_str("DEDUP_SIMILARITY_THRESHOLD", "0.85"))
 
 # ============================================================================
@@ -115,6 +125,7 @@ KB_DATA = KB_DIR / "GNEM_Excel_Data.xlsx"
 
 # Output files
 AUGMENTED_QUESTIONS_JSONL = FINETUNING_OUTPUTS_DIR / "augmented_questions.jsonl"
+AUGMENTED_ENRICHED_JSONL = FINETUNING_OUTPUTS_DIR / "augmented_enriched.jsonl"
 VALIDATED_QUESTIONS_JSONL = FINETUNING_OUTPUTS_DIR / "validated_questions.jsonl"
 TRAIN_DATASET_JSONL = FINETUNING_OUTPUTS_DIR / "train_dataset.jsonl"
 VAL_DATASET_JSONL = FINETUNING_OUTPUTS_DIR / "val_dataset.jsonl"

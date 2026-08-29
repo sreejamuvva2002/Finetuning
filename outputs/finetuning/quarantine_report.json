@@ -1,0 +1,345 @@
+{
+  "outlier_rows": [
+    {
+      "kb_row_index": 195,
+      "source_id": "kb-0195",
+      "company": "WIKA USA",
+      "location": "Lawrenceville, Gwinnett County",
+      "employment": 250000,
+      "employment_flag": "IMPLAUSIBLE (> 50000)",
+      "derived_examples": {
+        "kb_examples": [
+          "kb-0195-q0",
+          "kb-0195-q1",
+          "kb-0195-q2"
+        ],
+        "human_paraphrase_examples": [
+          "human-0007",
+          "human-0007-p1",
+          "human-0007-p2",
+          "human-0007-p3",
+          "human-0007-p4",
+          "human-0007-p5",
+          "human-0007-p6",
+          "human-0007-p7",
+          "human-0007-p8",
+          "human-0014",
+          "human-0014-p1",
+          "human-0014-p2",
+          "human-0014-p3",
+          "human-0014-p4",
+          "human-0014-p5",
+          "human-0014-p6",
+          "human-0014-p7",
+          "human-0014-p8",
+          "human-0023",
+          "human-0029"
+        ]
+      }
+    },
+    {
+      "kb_row_index": 197,
+      "source_id": "kb-0197",
+      "company": "Woory Industrial Co.",
+      "location": "Dublin, Johnson County",
+      "employment": 87000,
+      "employment_flag": "IMPLAUSIBLE (> 50000)",
+      "derived_examples": {
+        "kb_examples": [
+          "kb-0197-q0",
+          "kb-0197-q1",
+          "kb-0197-q2"
+        ],
+        "human_paraphrase_examples": [
+          "human-0023",
+          "human-0029"
+        ]
+      }
+    },
+    {
+      "kb_row_index": 198,
+      "source_id": "kb-0198",
+      "company": "Yachiyo Manufacturing of America LLC",
+      "location": "Carrollton, Carroll County",
+      "employment": 173700,
+      "employment_flag": "IMPLAUSIBLE (> 50000)",
+      "derived_examples": {
+        "kb_examples": [
+          "kb-0198-q0",
+          "kb-0198-q1",
+          "kb-0198-q2"
+        ],
+        "human_paraphrase_examples": [
+          "human-0023",
+          "human-0029"
+        ]
+      }
+    },
+    {
+      "kb_row_index": 199,
+      "source_id": "kb-0199",
+      "company": "Yamaha Motor Manufacturing Corp.",
+      "location": "Newnan, Coweta County",
+      "employment": 190000,
+      "employment_flag": "IMPLAUSIBLE (> 50000)",
+      "derived_examples": {
+        "kb_examples": [
+          "kb-0199-q0",
+          "kb-0199-q1",
+          "kb-0199-q2"
+        ],
+        "human_paraphrase_examples": [
+          "human-0010",
+          "human-0010-p1",
+          "human-0010-p2",
+          "human-0010-p3",
+          "human-0010-p4",
+          "human-0010-p5",
+          "human-0010-p6",
+          "human-0010-p7",
+          "human-0010-p8",
+          "human-0023",
+          "human-0029"
+        ]
+      }
+    },
+    {
+      "kb_row_index": 200,
+      "source_id": "kb-0200",
+      "company": "Yazaki North America",
+      "location": "Griffin, Spalding County",
+      "employment": 230000,
+      "employment_flag": "IMPLAUSIBLE (> 50000)",
+      "derived_examples": {
+        "kb_examples": [
+          "kb-0200-q0",
+          "kb-0200-q1",
+          "kb-0200-q2"
+        ],
+        "human_paraphrase_examples": [
+          "human-0004",
+          "human-0004-p1",
+          "human-0004-p2",
+          "human-0004-p3",
+          "human-0004-p4",
+          "human-0004-p5",
+          "human-0004-p6",
+          "human-0004-p7",
+          "human-0004-p8",
+          "human-0018",
+          "human-0018-p2",
+          "human-0018-p3",
+          "human-0018-p7",
+          "human-0023",
+          "human-0029"
+        ]
+      }
+    },
+    {
+      "kb_row_index": 201,
+      "source_id": "kb-0201",
+      "company": "YKK USA Inc.",
+      "location": "Marietta, Cobb County",
+      "employment": 190159,
+      "employment_flag": "IMPLAUSIBLE (> 50000)",
+      "derived_examples": {
+        "kb_examples": [
+          "kb-0201-q0",
+          "kb-0201-q1",
+          "kb-0201-q2"
+        ],
+        "human_paraphrase_examples": [
+          "human-0023",
+          "human-0029"
+        ]
+      }
+    },
+    {
+      "kb_row_index": 202,
+      "source_id": "kb-0202",
+      "company": "ZF Gainesville LLC",
+      "location": "Gainesville, Hall County",
+      "employment": 170000,
+      "employment_flag": "IMPLAUSIBLE (> 50000)",
+      "derived_examples": {
+        "kb_examples": [
+          "kb-0202-q0",
+          "kb-0202-q1",
+          "kb-0202-q2",
+          "kb-0204-q0",
+          "kb-0204-q1",
+          "kb-0204-q2"
+        ],
+        "human_paraphrase_examples": [
+          "human-0003",
+          "human-0003-p1",
+          "human-0003-p2",
+          "human-0003-p3",
+          "human-0003-p4",
+          "human-0003-p5",
+          "human-0003-p6",
+          "human-0003-p7",
+          "human-0003-p8",
+          "human-0004",
+          "human-0004-p1",
+          "human-0004-p2",
+          "human-0004-p3",
+          "human-0004-p4",
+          "human-0004-p5",
+          "human-0004-p6",
+          "human-0004-p7",
+          "human-0004-p8",
+          "human-0018",
+          "human-0018-p2",
+          "human-0018-p3",
+          "human-0018-p7",
+          "human-0023",
+          "human-0029",
+          "human-0034",
+          "human-0034-p1",
+          "human-0034-p2",
+          "human-0034-p3",
+          "human-0034-p4",
+          "human-0034-p5",
+          "human-0035",
+          "human-0035-p1",
+          "human-0037",
+          "human-0037-p1",
+          "human-0037-p2",
+          "human-0037-p3",
+          "human-0037-p4",
+          "human-0037-p5",
+          "human-0037-p6",
+          "human-0037-p7",
+          "human-0037-p8"
+        ]
+      }
+    },
+    {
+      "kb_row_index": 204,
+      "source_id": "kb-0204",
+      "company": "ZF Gainesville LLC",
+      "location": "Gainesville, Hall County",
+      "employment": 106100,
+      "employment_flag": "IMPLAUSIBLE (> 50000)",
+      "derived_examples": {
+        "kb_examples": [
+          "kb-0202-q0",
+          "kb-0202-q1",
+          "kb-0202-q2",
+          "kb-0204-q0",
+          "kb-0204-q1",
+          "kb-0204-q2"
+        ],
+        "human_paraphrase_examples": [
+          "human-0003",
+          "human-0003-p1",
+          "human-0003-p2",
+          "human-0003-p3",
+          "human-0003-p4",
+          "human-0003-p5",
+          "human-0003-p6",
+          "human-0003-p7",
+          "human-0003-p8",
+          "human-0004",
+          "human-0004-p1",
+          "human-0004-p2",
+          "human-0004-p3",
+          "human-0004-p4",
+          "human-0004-p5",
+          "human-0004-p6",
+          "human-0004-p7",
+          "human-0004-p8",
+          "human-0018",
+          "human-0018-p2",
+          "human-0018-p3",
+          "human-0018-p7",
+          "human-0023",
+          "human-0029",
+          "human-0034",
+          "human-0034-p1",
+          "human-0034-p2",
+          "human-0034-p3",
+          "human-0034-p4",
+          "human-0034-p5",
+          "human-0035",
+          "human-0035-p1",
+          "human-0037",
+          "human-0037-p1",
+          "human-0037-p2",
+          "human-0037-p3",
+          "human-0037-p4",
+          "human-0037-p5",
+          "human-0037-p6",
+          "human-0037-p7",
+          "human-0037-p8"
+        ]
+      }
+    }
+  ],
+  "quarantine": {
+    "rows_quarantined": 8,
+    "examples_removed_total": 45,
+    "examples_removed_by_segment": {
+      "human": 5,
+      "paraphrase": 37,
+      "kb": 3
+    },
+    "removed_ids": {
+      "human-0004": "answer contains outlier value [230000]",
+      "human-0007": "answer contains outlier value [250000]",
+      "human-0009": "employment aggregate with implausible total [314452]",
+      "human-0034": "answer contains outlier value [170000]",
+      "human-0037": "answer contains outlier value [170000]",
+      "human-0004-p1": "answer contains outlier value [230000]",
+      "human-0004-p2": "answer contains outlier value [230000]",
+      "human-0004-p3": "answer contains outlier value [230000]",
+      "human-0004-p4": "answer contains outlier value [230000]",
+      "human-0004-p5": "answer contains outlier value [230000]",
+      "human-0004-p6": "answer contains outlier value [230000]",
+      "human-0004-p7": "answer contains outlier value [230000]",
+      "human-0004-p8": "answer contains outlier value [230000]",
+      "human-0007-p1": "answer contains outlier value [250000]",
+      "human-0007-p2": "answer contains outlier value [250000]",
+      "human-0007-p3": "answer contains outlier value [250000]",
+      "human-0007-p4": "answer contains outlier value [250000]",
+      "human-0007-p5": "answer contains outlier value [250000]",
+      "human-0007-p6": "answer contains outlier value [250000]",
+      "human-0007-p7": "answer contains outlier value [250000]",
+      "human-0007-p8": "answer contains outlier value [250000]",
+      "human-0009-p1": "employment aggregate with implausible total [314452]",
+      "human-0009-p2": "employment aggregate with implausible total [314452]",
+      "human-0009-p3": "employment aggregate with implausible total [314452]",
+      "human-0009-p4": "employment aggregate with implausible total [314452]",
+      "human-0009-p5": "employment aggregate with implausible total [314452]",
+      "human-0009-p6": "employment aggregate with implausible total [314452]",
+      "human-0009-p7": "employment aggregate with implausible total [314452]",
+      "human-0009-p8": "employment aggregate with implausible total [314452]",
+      "human-0034-p1": "answer contains outlier value [170000]",
+      "human-0034-p2": "answer contains outlier value [170000]",
+      "human-0034-p3": "answer contains outlier value [170000]",
+      "human-0034-p4": "answer contains outlier value [170000]",
+      "human-0034-p5": "answer contains outlier value [170000]",
+      "human-0037-p1": "answer contains outlier value [170000]",
+      "human-0037-p2": "answer contains outlier value [170000]",
+      "human-0037-p3": "answer contains outlier value [170000]",
+      "human-0037-p4": "answer contains outlier value [170000]",
+      "human-0037-p5": "answer contains outlier value [170000]",
+      "human-0037-p6": "answer contains outlier value [170000]",
+      "human-0037-p7": "answer contains outlier value [170000]",
+      "human-0037-p8": "answer contains outlier value [170000]",
+      "kb-0197-q1": "answer contains outlier value [87000]",
+      "kb-0199-q1": "answer contains outlier value [190000]",
+      "kb-0201-q2": "answer contains outlier value [190159]"
+    }
+  },
+  "result": {
+    "validated_input": 943,
+    "active_kept": 898,
+    "train_count": 718,
+    "val_count": 177,
+    "source_id_leakage": [],
+    "train_dataset": "/home/sreeja/Finetuning/outputs/finetuning/train_dataset.jsonl",
+    "val_dataset": "/home/sreeja/Finetuning/outputs/finetuning/val_dataset.jsonl"
+  }
+}

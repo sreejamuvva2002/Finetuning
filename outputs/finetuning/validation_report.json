@@ -1,0 +1,178 @@
+{
+  "total": 961,
+  "passed": 943,
+  "failed": 18,
+  "acceptance_rate": 0.9812695109261186,
+  "passed_by_type": {
+    "human": 42,
+    "paraphrase": 239,
+    "kb": 612,
+    "adversarial": 50
+  },
+  "failed_by_type": {
+    "paraphrase": 15,
+    "kb": 3
+  },
+  "failed_examples": [
+    {
+      "id": "human-0011-p7",
+      "question": "What are the main categories of products and services linked to Sewon America Inc.'s operations in LaGrange, Georgia?",
+      "answer": "Sewon America Inc. has three operating entries in Georgia and all three are located in LaGrange, Troup County, Georgia.\nSewon America Inc. | Product: Motor vehicle engines and parts\nSewon America Inc. | Product: Fire truck bodies\nSewon America Inc. | Product: Automotive aftermarket parts",
+      "source_type": "paraphrase",
+      "source_id": "human-0011",
+      "source_ref": {
+        "human_num": 11
+      },
+      "validation": {
+        "decision": "reject_intent",
+        "rubric": "bypass",
+        "grounded": false,
+        "judge_model": "gpt-oss:120b"
+      }
+    },
+    {
+      "id": "human-0015-p6",
+      "question": "Find all GA Tier\u00a02/3 companies under Electronic and Other Electrical Equipment that can be upgraded for EV power electronics.",
+      "answer": "There are no Georgia Tier 2/3 companies listed under the Electronic and Other Electrical Equipment and Components industry group. So none can be upgraded to supply EV power electronics based on the provided evidence.",
+      "source_type": "paraphrase",
+      "source_id": "human-0015",
+      "source_ref": {
+        "human_num": 15
+      },
+      "validation": {
+        "decision": "reject_intent",
+        "rubric": "bypass",
+        "grounded": false,
+        "judge_model": "gpt-oss:120b"
+      }
+    },
+    {
+      "id": "human-0015-p7",
+      "question": "Determine whether any Georgia Tier\u202f2 or Tier\u202f3 entities in the Electronic and Other Electrical Equipment and Components industry are available for upgrade to EV power electronics supply.",
+      "answer": "There are no Georgia Tier 2/3 companies listed under the Electronic and Other Electrical Equipment and Components industry group. So none can be upgraded to supply EV power electronics based on the provided evidence.",
+      "source_type": "paraphrase",
+      "source_id": "human-0015",
+      "source_ref": {
+        "human_num": 15
+      },
+      "validation": {
+        "decision": "reject_intent",
+        "rubric": "bypass",
+        "grounded": false,
+        "judge_model": "gpt-oss:120b"
+      }
+    },
+    {
+      "id": "human-0015-p8",
+      "question": "Do we have any GA Tier\u20112/3 firms in the electronic gear sector that could step up to supply EV power electronics?",
+      "answer": "There are no Georgia Tier 2/3 companies listed under the Electronic and Other Electrical Equipment and Components industry group. So none can be upgraded to supply EV power electronics based on the provided evidence.",
+      "source_type": "paraphrase",
+      "source_id": "human-0015",
+      "source_ref": {
+        "human_num": 15
+      },
+      "validation": {
+        "decision": "reject_intent",
+        "rubric": "bypass",
+        "grounded": false,
+        "judge_model": "gpt-oss:120b"
+      }
+    },
+    {
+      "id": "human-0018-p1",
+      "question": "Which Georgia-based firms manufacture DC\u2011to\u2011DC converters, capacitors or other power electronics for EVs, and what tier does each belong to?",
+      "answer": "There are 5 Georgia companies producing DC-to-DC converters, capacitors, or power electronics components relevant to EV drivetrains.\nYazaki North America [OEM Footprint]\nZF Gainesville LLC [OEM Supply Chain]\nGSC Steel Stamping LLC [Tier 2/3]\nHyundai MOBIS (Georgia) [Tier 1/2]\nHyundai Transys Georgia Seating Systems [Tier 1/2]",
+      "source_type": "paraphrase",
+      "source_id": "human-0018",
+      "source_ref": {
+        "human_num": 18
+      },
+      "validation": {
+        "decision": "reject_intent",
+        "rubric": "bypass",
+        "grounded": false,
+        "judge_model": "gpt-oss:120b"
+      }
+    },
+    {
+      "id": "human-0018-p4",
+      "question": "I need a rundown of Georgia companies producing DC\u2011to\u2011DC converters, capacitors, or EV power electronics, plus their tier classifications.",
+      "answer": "There are 5 Georgia companies producing DC-to-DC converters, capacitors, or power electronics components relevant to EV drivetrains.\nYazaki North America [OEM Footprint]\nZF Gainesville LLC [OEM Supply Chain]\nGSC Steel Stamping LLC [Tier 2/3]\nHyundai MOBIS (Georgia) [Tier 1/2]\nHyundai Transys Georgia Seating Systems [Tier 1/2]",
+      "source_type": "paraphrase",
+      "source_id": "human-0018",
+      "source_ref": {
+        "human_num": 18
+      },
+      "validation": {
+        "decision": "reject_intent",
+        "rubric": "bypass",
+        "grounded": false,
+        "judge_model": "gpt-oss:120b"
+      }
+    },
+    {
+      "id": "human-0018-p5",
+      "question": "What are the names and tier designations of Georgia firms that supply DC\u2011to\u2011DC converters, capacitors, or related power electronics for electric vehicles?",
+      "answer": "There are 5 Georgia companies producing DC-to-DC converters, capacitors, or power electronics components relevant to EV drivetrains.\nYazaki North America [OEM Footprint]\nZF Gainesville LLC [OEM Supply Chain]\nGSC Steel Stamping LLC [Tier 2/3]\nHyundai MOBIS (Georgia) [Tier 1/2]\nHyundai Transys Georgia Seating Systems [Tier 1/2]",
+      "source_type": "paraphrase",
+      "source_id": "human-0018",
+      "source_ref": {
+        "human_num": 18
+      },
+      "validation": {
+        "decision": "reject_intent",
+        "rubric": "bypass",
+        "grounded": false,
+        "judge_model": "gpt-oss:120b"
+      }
+    },
+    {
+      "id": "human-0018-p6",
+      "question": "Give me the list of Georgia companies involved in making DC-to-DC converters, caps, or power electronics components for EV drivetrains, with their respective tiers.",
+      "answer": "There are 5 Georgia companies producing DC-to-DC converters, capacitors, or power electronics components relevant to EV drivetrains.\nYazaki North America [OEM Footprint]\nZF Gainesville LLC [OEM Supply Chain]\nGSC Steel Stamping LLC [Tier 2/3]\nHyundai MOBIS (Georgia) [Tier 1/2]\nHyundai Transys Georgia Seating Systems [Tier 1/2]",
+      "source_type": "paraphrase",
+      "source_id": "human-0018",
+      "source_ref": {
+        "human_num": 18
+      },
+      "validation": {
+        "decision": "reject_intent",
+        "rubric": "bypass",
+        "grounded": false,
+        "judge_model": "gpt-oss:120b"
+      }
+    },
+    {
+      "id": "human-0018-p8",
+      "question": "Looking for Georgia companies that produce DC\u2011to\u2011DC converters, capacitors, or other power electronic parts for EVs \u2013 what tier is each assigned?",
+      "answer": "There are 5 Georgia companies producing DC-to-DC converters, capacitors, or power electronics components relevant to EV drivetrains.\nYazaki North America [OEM Footprint]\nZF Gainesville LLC [OEM Supply Chain]\nGSC Steel Stamping LLC [Tier 2/3]\nHyundai MOBIS (Georgia) [Tier 1/2]\nHyundai Transys Georgia Seating Systems [Tier 1/2]",
+      "source_type": "paraphrase",
+      "source_id": "human-0018",
+      "source_ref": {
+        "human_num": 18
+      },
+      "validation": {
+        "decision": "reject_intent",
+        "rubric": "bypass",
+        "grounded": false,
+        "judge_model": "gpt-oss:120b"
+      }
+    },
+    {
+      "id": "human-0021-p4",
+      "question": "Please provide the names of Tier\u202f2 or Tier\u202f3 automotive component manufacturers in Georgia with at least 300 workers and that can supply parts for electric vehicles.",
+      "answer": "There are 5 Tier 2/3 Georgia-based suppliers with employment over 300 that are classified as General Automotive but produce components transferable to EV platforms.\n\nArising Industries Inc. | Employment: 582 | EV Relevant: Indirect\nDinex Emissions Inc. | Employment: 500 | EV Relevant: Indirect\nACM Georgia LLC | Employment: 400 | EV Relevant: Indirect\nFOX Factory | Employment: 345 | EV Relevant: Indirect\nAVS | Employment: 310 | EV Relevant: Indirect",
+      "source_type": "paraphrase",
+      "source_id": "human-0021",
+      "source_ref": {
+        "human_num": 21
+      },
+      "validation": {
+        "decision": "reject_intent",
+        "rubric": "bypass",
+        "grounded": false,
+        "judge_model": "gpt-oss:120b"
+      }
+    }
+  ]
+}

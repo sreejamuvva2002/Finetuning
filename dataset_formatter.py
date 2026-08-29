@@ -3,10 +3,11 @@ from __future__ import annotations
 
 import json
 import logging
+import random
+import re
+from collections import defaultdict
 from pathlib import Path
 from typing import Optional
-
-import pandas as pd
 
 try:
     from . import config
@@ -14,6 +15,32 @@ except ImportError:
     import config
 
 logger = logging.getLogger(__name__)
+
+
+def _normalize(text: str) -> str:
+    return re.sub(r"\s+", " ", str(text)).strip().casefold()
+
+
+def deduplicate(questions: list[dict]) -> list[dict]:
+    """Drop exact/near-exact duplicate *questions* while keeping groups intact.
+
+    Conservative: only removes records whose normalized question text was already seen, so
+    intentional paraphrase diversity survives. Group membership (``source_id``) is untouched.
+    """
+    if not config.ENABLE_DEDUPLICATION:
+        return questions
+    seen: set[str] = set()
+    kept = []
+    for qa in questions:
+        key = _normalize(qa["question"])
+        if key in seen:
+            continue
+        seen.add(key)
+        kept.append(qa)
+    removed = len(questions) - len(kept)
+    logger.info("Deduplication removed %d duplicate questions (%d -> %d)",
+                removed, len(questions), len(kept))
+    return kept
 
 
 class ChatMLFormatter:
@@ -71,32 +98,41 @@ def train_val_split(
     train_ratio: float = 0.8,
     seed: int = 42,
 ) -> tuple[list[dict], list[dict]]:
-    """Split questions into train/validation sets.
+    """Group-aware split so paraphrases / same-KB-row pairs never leak across splits.
 
-    Args:
-        questions: List of Q&A dicts
-        train_ratio: Fraction for training (default 0.8)
-        seed: Random seed for reproducibility
+    Records are grouped by ``source_id`` (a record without one is its own group). Whole
+    groups are assigned to train or val, guaranteeing the ``source_id`` sets are disjoint.
 
     Returns:
         Tuple of (train_questions, val_questions)
     """
-    df = pd.DataFrame(questions)
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for i, qa in enumerate(questions):
+        gid = qa.get("source_id") or f"__singleton_{i}"
+        groups[gid].append(qa)
 
-    # Shuffle
-    df = df.sample(frac=1, random_state=seed).reset_index(drop=True)
+    group_ids = list(groups.keys())
+    random.Random(seed).shuffle(group_ids)
 
-    # Split
-    split_idx = int(len(df) * train_ratio)
-    train_df = df.iloc[:split_idx]
-    val_df = df.iloc[split_idx:]
+    target_train = int(len(questions) * train_ratio)
+    train: list[dict] = []
+    val: list[dict] = []
+    for gid in group_ids:
+        # Fill train until it reaches the target count, then send remaining groups to val.
+        if len(train) < target_train:
+            train.extend(groups[gid])
+        else:
+            val.extend(groups[gid])
 
-    train = train_df.to_dict("records")
-    val = val_df.to_dict("records")
+    train_ids = {q.get("source_id") for q in train}
+    val_ids = {q.get("source_id") for q in val}
+    leak = {i for i in (train_ids & val_ids) if i is not None}
+    assert not leak, f"source_id leakage across splits: {leak}"
 
     logger.info(
-        f"Train/validation split: {len(train)} train, {len(val)} validation "
-        f"({train_ratio*100:.0f}/{(1-train_ratio)*100:.0f})"
+        "Group-aware split: %d train / %d val records across %d groups "
+        "(%.0f/%.0f, no cross-split source_id leakage)",
+        len(train), len(val), len(group_ids), train_ratio * 100, (1 - train_ratio) * 100,
     )
     return train, val
 
@@ -134,7 +170,10 @@ def format_validated_dataset(
 
     logger.info(f"Loaded {len(questions)} validated questions")
 
-    # Split into train/validation
+    # Remove duplicate questions before splitting (group-aware, conservative)
+    questions = deduplicate(questions)
+
+    # Group-aware split into train/validation (no paraphrase / KB-row leakage)
     train_questions, val_questions = train_val_split(
         questions, train_ratio=train_ratio
     )

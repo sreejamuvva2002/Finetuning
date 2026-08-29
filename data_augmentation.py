@@ -141,6 +141,18 @@ Only return valid JSON, no other text."""
                 qa["answer"],
                 num_variations=num_variations_per_question,
             )
+            # Carry provenance: a paraphrase shares its parent's group and reuses the
+            # trusted reference answer verbatim.
+            parent_id = qa.get("source_id")
+            for n, var in enumerate(variations, start=1):
+                var["answer"] = qa["answer"]  # keep the trusted answer exactly
+                var["source_type"] = "paraphrase"
+                var["source_id"] = parent_id
+                var["source_ref"] = dict(qa.get("source_ref") or {})
+                var["reference_answer"] = qa["answer"]
+                var["trusted"] = False
+                if parent_id:
+                    var["id"] = f"{parent_id}-p{n}"
             all_variations.extend(variations)
 
         logger.info(f"Generated {len(all_variations)} paraphrased Q&A pairs")
@@ -154,21 +166,26 @@ class KBQuestionGenerator:
         self.client = client or get_client()
         self.kb_chunks = self._load_kb_chunks()
 
-    def _load_kb_chunks(self) -> list[str]:
-        """Load each row of the raw Knowledge Base as a grounded text chunk."""
+    def _load_kb_chunks(self) -> list[dict]:
+        """Load each row of the raw Knowledge Base as a grounded text chunk with provenance."""
         try:
             df = pd.read_excel(config.KB_DATA).dropna(how="all")
             if config.KB_RECORD_LIMIT > 0 and len(df) > config.KB_RECORD_LIMIT:
                 df = df.sample(n=config.KB_RECORD_LIMIT, random_state=42)
 
             chunks = []
-            for _, row in df.iterrows():
+            for row_index, (_, row) in enumerate(df.iterrows()):
                 fields = []
                 for column, value in row.items():
                     if pd.notna(value) and str(value).strip():
                         fields.append(f"{column}: {str(value).strip()}")
                 if fields:
-                    chunks.append(" | ".join(fields))
+                    company = row.get("Company")
+                    chunks.append({
+                        "chunk": " | ".join(fields),
+                        "kb_row_index": row_index,
+                        "kb_company": str(company).strip() if pd.notna(company) else None,
+                    })
             logger.info(
                 "Loaded %d raw KB records from %s (limit=%s)",
                 len(chunks),
@@ -229,9 +246,23 @@ Return only valid JSON."""
             List of all generated Q&A pairs
         """
         all_questions = []
-        for i, chunk in enumerate(self.kb_chunks):
+        for i, meta in enumerate(self.kb_chunks):
             logger.info(f"Generating from chunk {i+1}/{len(self.kb_chunks)}")
-            questions = self.generate_from_chunk(chunk, num_questions=num_questions_per_chunk)
+            questions = self.generate_from_chunk(
+                meta["chunk"], num_questions=num_questions_per_chunk
+            )
+            source_id = f"kb-{i:04d}"
+            for n, qa in enumerate(questions):
+                qa["id"] = f"{source_id}-q{n}"
+                qa["source_type"] = "kb"
+                qa["source_id"] = source_id
+                qa["source_ref"] = {
+                    "kb_row_index": meta["kb_row_index"],
+                    "kb_company": meta["kb_company"],
+                    "kb_chunk": meta["chunk"],
+                }
+                qa["reference_answer"] = None
+                qa["trusted"] = False
             all_questions.extend(questions)
 
         logger.info(f"Generated {len(all_questions)} KB-driven Q&A pairs")
@@ -275,7 +306,15 @@ Return only valid JSON."""
             )
             all_questions.extend(questions[:current_batch_size])
 
-        return all_questions[:num_samples]
+        adversarial = all_questions[:num_samples]
+        for i, qa in enumerate(adversarial):
+            qa["id"] = f"adv-{i:04d}"
+            qa["source_type"] = "adversarial"
+            qa["source_id"] = f"adv-{i:04d}"
+            qa["source_ref"] = {}
+            qa["reference_answer"] = None
+            qa["trusted"] = False
+        return adversarial
 
 
 def load_validated_questions() -> list[dict]:
@@ -304,8 +343,10 @@ def load_validated_questions() -> list[dict]:
                 f"{[str(column) for column in df.columns if pd.notna(column)]}"
             )
 
+        num_column = find_column(("Num", "No", "Number", "Id"))
+
         questions = []
-        for _, row in df.iterrows():
+        for position, (_, row) in enumerate(df.iterrows()):
             question = row.get(question_column)
             answer = row.get(answer_column)
             if pd.isna(question) or pd.isna(answer):
@@ -314,10 +355,18 @@ def load_validated_questions() -> list[dict]:
             answer = str(answer).strip()
             if not question or not answer:
                 continue
+            num = row.get(num_column) if num_column is not None else None
+            num = int(num) if (num is not None and pd.notna(num)) else position + 1
             questions.append(
                 {
+                    "id": f"human-{num:04d}",
                     "question": question,
                     "answer": answer,
+                    "source_type": "human",
+                    "source_id": f"human-{num:04d}",
+                    "source_ref": {"human_num": num},
+                    "reference_answer": answer,
+                    "trusted": True,
                 }
             )
         logger.info(f"Loaded {len(questions)} validated questions")
@@ -383,8 +432,9 @@ def augment_dataset(
         f"{len(kb_questions)} KB-driven + {len(adversarial)} adversarial)"
     )
 
-    # Save
-    save_augmented_questions(all_augmented)
+    # Save. Records now carry provenance, so this is the enriched dataset the grounded
+    # validator consumes directly (no backfill needed on fresh runs).
+    save_augmented_questions(all_augmented, config.AUGMENTED_ENRICHED_JSONL)
 
     return all_augmented
 
